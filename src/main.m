@@ -37,4 +37,8 @@ for k = 1:length(SNR)
     end
 end
 
-plot(SNR, without_error_rate, SNR, with_error_rate);
+semilogy(SNR, with_error_rate, SNR, without_error_rate);
+title 'Error Bit Rate'
+legend('With Encryption', 'Without Encryption');
+xlabel 'SNR/dB'
+ylabel 'Eb'
