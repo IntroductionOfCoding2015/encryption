@@ -56,8 +56,11 @@ function [ feistel_out ] = Feistel( R, key )
 	for k = 1: 8
 		row = 2*key_mixed(k, 1) + key_mixed(k, 6) + 1;
 		col = 8*key_mixed(k, 2) + 4*key_mixed(k, 3) + 2*key_mixed(k, 4) + key_mixed(k, 5) + 1;
-		bin = double(dec2bin(S_box{k}(row, col)))-48;
-		sub_S(k, :) = [zeros(1, 4-length(bin)), bin];
+		d = S_box{k}(row, col);
+		for p = 4: -1: 1
+			sub_S(k, p) = mod(d, 2);
+			d = floor(d/2);
+		end
 	end
 	sub_S = reshape(sub_S', 1, 32);
 
