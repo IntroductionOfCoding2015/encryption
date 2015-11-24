@@ -27,7 +27,7 @@ for round = 1:16
     C = [C(1+shiftbits(round):end), C(1:shiftbits(round))];
     D = [D(1+shiftbits(round):end), D(1:shiftbits(round))];
     raw_subkey = [C,D];
-    subkeys{round} = raw_subkey(PC2);
+    subkeys{round} = raw_subkey(PC2)';
 end
 
 end
