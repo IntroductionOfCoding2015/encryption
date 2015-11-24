@@ -6,8 +6,8 @@
 
 ### 密钥生成 
 
-- 输入：
-- 输出：
+- 输入：64bits original key
+- 输出：16 cells, each contains one 48bits subkey (each cell row vector)
 
 ## Part II
 
