@@ -2,21 +2,17 @@ addpath '../convolutional-coding/src'
 load data
 
 EFFICIENCY = 2;
-SNR = 0:10;
-ITERS = 5;
+SNR = 5:15;
+ITERS = 10;
 
-data = randi([0 1], 1024, 1);
 key = create_key();
 
-without_correct_rate = zeros(size(SNR));
-with_correct_rate = zeros(size(SNR));
+without_error_rate = zeros(size(SNR));
+with_error_rate = zeros(size(SNR));
 
 for k = 1:length(SNR)
     snr = SNR(k);
     disp([num2str(k) '/' num2str(length(SNR)) ': SNR = ' num2str(snr)]);
-
-    without_count = 0;
-    with_count = 0;
 
     for iter = 1:ITERS
         % Without encryption.
@@ -24,9 +20,9 @@ for k = 1:length(SNR)
         signals = transmit(signals, snr);
         recovered = sym_decode(signals, EFFICIENCY);
 
-        if data == recovered
-            without_count = without_count + 1;
-        end
+        without_error_rate(k) = ...
+            without_error_rate(k) + ...
+            sum(xor(data, recovered)) / length(data) / ITERS;
 
         % With encryption.
         encrypted = encrypt(data, key);
@@ -35,11 +31,8 @@ for k = 1:length(SNR)
         encrypted = sym_decode(signals, EFFICIENCY);
         recovered = decrypt(encrypted, key);
 
-        if data == recovered
-            with_count = with_count + 1;
-        end
+        with_error_rate(k) = ...
+            with_error_rate(k) + ...
+            sum(xor(data, recovered)) / length(data) / ITERS;
     end
-
-    without_correct_rate(k) = without_count / ITERS;
-    with_correct_rate(k) = with_count / ITERS;
 end
