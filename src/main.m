@@ -2,8 +2,8 @@ addpath '../convolutional-coding/src'
 load data
 
 EFFICIENCY = 2;
-SNR = 5:15;
-ITERS = 10;
+SNR = -15:1:15;
+ITERS = 100;
 
 key = create_key();
 
@@ -36,3 +36,5 @@ for k = 1:length(SNR)
             sum(xor(data, recovered)) / length(data) / ITERS;
     end
 end
+
+plot(SNR, without_error_rate, SNR, with_error_rate);
