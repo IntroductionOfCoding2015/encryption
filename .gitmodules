@@ -1,0 +1,3 @@
+[submodule "convolutional-coding"]
+	path = convolutional-coding
+	url = https://github.com/IntroductionOfCoding2015/convolutional-coding
