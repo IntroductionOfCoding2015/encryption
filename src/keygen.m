@@ -20,8 +20,8 @@ PC2 = [...
     34 53 46 42 50 36 29 32];
 shiftbits = [1 1 2 2 2 2 2 2 1 2 2 2 2 2 2 1];
 
-C = key(PC1(1,:));
-D = key(PC1(2,:));
+C = key(PC1(1,:))';
+D = key(PC1(2,:))';
 
 for round = 1:16
     C = [C(1+shiftbits(round):end), C(1:shiftbits(round))];
@@ -31,4 +31,3 @@ for round = 1:16
 end
 
 end
-
