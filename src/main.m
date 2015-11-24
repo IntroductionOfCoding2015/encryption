@@ -1,5 +1,6 @@
 addpath '../convolutional-coding/src'
 load data
+close all
 
 EFFICIENCY = 2;
 SNR = -15:1:15;
@@ -20,9 +21,18 @@ for k = 1:length(SNR)
         signals = transmit(signals, snr);
         recovered = sym_decode(signals, EFFICIENCY);
 
-        without_error_rate(k) = ...
-            without_error_rate(k) + ...
-            sum(xor(data, recovered)) / length(data) / ITERS;
+        err = xor(data, recovered);
+        without_error_rate(k) = without_error_rate(k) + ...
+                                sum(err) / length(data) / ITERS;
+
+        % figure
+        % for block = 1:16
+        %     range = ((block - 1) * 64 + 1):(block * 64);
+        %     subplot(4, 4, block);
+        %     stem(err(range))
+        %     axis([1 64 0 1])
+        % end
+        % suptitle(['Error Map, SNR = ' num2str(snr) 'dB, Without Encryption']);
 
         % With encryption.
         encrypted = encrypt(data, key);
@@ -31,12 +41,21 @@ for k = 1:length(SNR)
         encrypted = sym_decode(signals, EFFICIENCY);
         recovered = decrypt(encrypted, key);
 
-        with_error_rate(k) = ...
-            with_error_rate(k) + ...
-            sum(xor(data, recovered)) / length(data) / ITERS;
+        err = xor(data, recovered);
+        with_error_rate(k) = with_error_rate(k) + ...
+                             sum(err) / length(data) / ITERS;
+        % figure
+        % for block = 1:16
+        %     range = ((block - 1) * 64 + 1):(block * 64);
+        %     subplot(4, 4, block);
+        %     stem(err(range))
+        %     axis([1 64 0 1])
+        % end
+        % suptitle(['Error Map, SNR = ' num2str(snr) 'dB, With Encryption']);
     end
 end
 
+figure
 semilogy(SNR, with_error_rate, SNR, without_error_rate);
 title 'Error Bit Rate'
 legend('With Encryption', 'Without Encryption');
