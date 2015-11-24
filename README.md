@@ -50,3 +50,15 @@
 
 - 计算误比特率
 - 画出误码图案
+
+## 实验结果
+
+### 误比特率
+
+![误比特率](report/error_bit_rate.png)
+
+### 误码图案
+
+![未加密时误码图案](report/error_map_5dB_without.png)
+
+![加密时误码图案](report/error_map_5dB_with.png)
