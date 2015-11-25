@@ -6,5 +6,11 @@ function key = create_key(varargin)
         num = varargin(1);
     end
 
-    key = randi([0 1], 64, num);
+    key = zeros(64, num);
+
+    for k = 1:num
+        this_key = randi([0 1], 7, 8);
+        this_key = [this_key; mod(sum(this_key), 2)];
+        key(:, k) = this_key(:);
+    end
 end
