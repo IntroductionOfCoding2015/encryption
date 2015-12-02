@@ -225,7 +225,7 @@ close all
 
 EFFICIENCY = 2;
 SNR = -15:1:15;
-ITERS = 100;
+ITERS = 10;
 
 key = create_key();
 
@@ -238,9 +238,9 @@ for k = 1:length(SNR)
 
     for iter = 1:ITERS
         % Without encryption.
-        signals = sym_encode(data, EFFICIENCY);
+        signals = conv_send(data, true, EFFICIENCY, []);
         signals = transmit(signals, snr);
-        recovered = sym_decode(signals, EFFICIENCY);
+        recovered = conv_receive(signals, true, EFFICIENCY, [], true);
 
         err = xor(data, recovered);
         without_error_rate(k) = without_error_rate(k) + ...
@@ -257,9 +257,9 @@ for k = 1:length(SNR)
 
         % With encryption.
         encrypted = encrypt(data, key);
-        signals = sym_encode(encrypted, EFFICIENCY);
+        signals = conv_send(encrypted, true, EFFICIENCY, []);
         signals = transmit(signals, snr);
-        encrypted = sym_decode(signals, EFFICIENCY);
+        encrypted = conv_receive(signals, true, EFFICIENCY, [], true);
         recovered = decrypt(encrypted, key);
 
         err = xor(data, recovered);
@@ -298,6 +298,6 @@ ylabel 'Eb'
 
 如图所示。可以看到，是否加密对误块率基本没有影响。但加密后，一旦有误码就会在块内扩散出大量的误码，使误比特率大大增加。这说明我们的加密算法确实能产生雪崩效应，是合格的。不过，这种雪崩效应被限制在了长为 64 的块中，可能会影响加密的效果。
 
-![未加密时误码图案](../error_map_5dB_without.png)
+![未加密时误码图案](../error_map_1dB_without.png)
 
-![加密时误码图案](../error_map_5dB_with.png)
+![加密时误码图案](../error_map_1dB_with.png)
