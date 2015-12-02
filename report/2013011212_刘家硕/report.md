@@ -152,9 +152,9 @@ end
 
 2. 误码图案
 
-    ![未加密时误码图案](error_map_5dB_without.png)
+    ![未加密时误码图案](error_map_1dB_without.png)
 
-    ![加密时误码图案](error_map_5dB_with.png)
+    ![加密时误码图案](error_map_1dB_with.png)
 
     都是在5dB信噪比下，有无加解密的误码图案的对比
 
