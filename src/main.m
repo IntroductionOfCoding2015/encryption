@@ -4,7 +4,7 @@ close all
 
 EFFICIENCY = 2;
 SNR = -15:1:15;
-ITERS = 100;
+ITERS = 10;
 
 key = create_key();
 
@@ -17,9 +17,9 @@ for k = 1:length(SNR)
 
     for iter = 1:ITERS
         % Without encryption.
-        signals = sym_encode(data, EFFICIENCY);
+        signals = conv_send(data, true, EFFICIENCY, []);
         signals = transmit(signals, snr);
-        recovered = sym_decode(signals, EFFICIENCY);
+        recovered = conv_receive(signals, true, EFFICIENCY, [], true);
 
         err = xor(data, recovered);
         without_error_rate(k) = without_error_rate(k) + ...
@@ -36,9 +36,9 @@ for k = 1:length(SNR)
 
         % With encryption.
         encrypted = encrypt(data, key);
-        signals = sym_encode(encrypted, EFFICIENCY);
+        signals = conv_send(encrypted, true, EFFICIENCY, []);
         signals = transmit(signals, snr);
-        encrypted = sym_decode(signals, EFFICIENCY);
+        encrypted = conv_receive(signals, true, EFFICIENCY, [], true);
         recovered = decrypt(encrypted, key);
 
         err = xor(data, recovered);
